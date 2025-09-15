@@ -55,6 +55,8 @@ async function loadSheet(charId, action) {
       const jsonUrl = sheetJsonPath(charId, action);
       const res = await fetch(jsonUrl, { cache: 'no-cache' });
       if (!res.ok) return null; // no existe hoja
+      const ct = (res.headers && res.headers.get && res.headers.get('content-type')) || '';
+      if (!ct.includes('application/json')) return null; // evita parsear HTML de fallback
       const atlas = await res.json();
       const imgUrl = sheetImagePath(charId, action);
       const img = new Image();
@@ -91,18 +93,8 @@ class SpriteAnimator {
     this.frameIndex = 0;
     this.acc = 0;
     this.fps = 10; // velocidad por defecto
-    // intentar precargar acciones comunes
+    // precargar solo idle; el resto se carga on-demand para evitar warnings en dev
     loadSheet(charId, 'idle');
-    loadSheet(charId, 'idle_left');
-    loadSheet(charId, 'idle_right');
-    loadSheet(charId, 'walk');
-    loadSheet(charId, 'run');
-    loadSheet(charId, 'jump');
-    loadSheet(charId, 'crouch');
-    loadSheet(charId, 'slide');
-    loadSheet(charId, 'attack1');
-    loadSheet(charId, 'victory');
-    loadSheet(charId, 'death');
   }
   setAction(action) {
     if (!action) return;

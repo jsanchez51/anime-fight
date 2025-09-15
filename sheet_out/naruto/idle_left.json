@@ -1,0 +1,35 @@
+{
+  "frames": [
+    {
+      "filename": "idle_left_001.png",
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 512,
+        "h": 768
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 512,
+        "h": 768
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 768
+      }
+    }
+  ],
+  "meta": {
+    "app": "spritebuilder",
+    "version": "1.0",
+    "image": "idle_left.png",
+    "size": {
+      "w": 4114,
+      "h": 772
+    },
+    "scale": "1"
+  }
+}

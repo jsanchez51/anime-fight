@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anime 2v2 Fighter</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="theme-color" content="#0e0f1a" />
+</head>
+<body>
+    <div id="parallax">
+        <div class="layer layer-back"></div>
+        <div class="layer layer-mid"></div>
+        <div class="layer layer-front"></div>
+    </div>
+
+    <main id="game-root">
+        <canvas id="game"></canvas>
+
+        <div id="postgame" aria-hidden="true" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;">
+            <div style="pointer-events:auto; display:flex; gap:12px;">
+                <button id="btn-replay">Volver a jugar</button>
+                <button id="btn-reselect">Volver a seleccionar</button>
+            </div>
+        </div>
+
+        <section id="select" aria-hidden="false">
+            <div class="select-wrap">
+                <header>
+                    <h1>Selecciona tu personaje</h1>
+                    <p>Haz clic en Comenzar</p>
+                </header>
+                <div class="selected-row" style="display:flex; gap:16px; align-items:center; justify-content:center;">
+                    <div>
+                        <h3 style="text-align:center; margin:6px 0;">Tu personaje</h3>
+                        <img id="p1-selected-preview" class="preview" alt="P1" />
+                    </div>
+                    <div>
+                        <h3 style="text-align:center; margin:6px 0;">Enemigo</h3>
+                        <img id="p2-selected-preview" class="preview" alt="P2" />
+                    </div>
+                </div>
+                <div class="grid" id="p1-grid" style="margin-top:12px;"></div>
+                <h3 style="margin-top:10px;">Elige enemigo</h3>
+                <div class="grid" id="p2-grid" style="margin-top:6px;"></div>
+                <div class="actions">
+                    <label style="margin-right:12px;">
+                        Modo:
+                        <select id="mode-select">
+                            <option value="1v1">1 vs 1</option>
+                            <option value="2v2" selected>2 vs 2</option>
+                        </select>
+                    </label>
+                    <label style="margin-right:12px;">
+                        Dificultad:
+                        <select id="difficulty-select">
+                            <option value="easy" selected>Fácil</option>
+                            <option value="normal">Media</option>
+                            <option value="hard">Difícil</option>
+                        </select>
+                    </label>
+                    <label style="margin-right:12px;">
+                        Escenario:
+                        <select id="world-select">
+                            <option value="leaf" selected>Aldea de la Hoja</option>
+                            <option value="forest">Bosque</option>
+                            <option value="desert">Desierto</option>
+                            <option value="city">Ciudad</option>
+                        </select>
+                    </label>
+                    <label style="margin-right:12px;">
+                        Tiempo:
+                        <select id="tod-select">
+                            <option value="day" selected>Día</option>
+                            <option value="night">Noche</option>
+                        </select>
+                    </label>
+                    <label style="margin-right:12px; display:flex; align-items:center; gap:6px;">
+                        <input type="checkbox" id="dummy-toggle" /> Enemigo quieto (prueba)
+                    </label>
+                    <button id="start-btn">Comenzar</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="hud">
+            <div class="team team-left">
+                <div class="fighter-hud">
+                    <div class="name" id="name-p1">P1</div>
+                    <div class="bar">
+                        <div class="hp" id="hp-p1"></div>
+                    </div>
+                </div>
+                <div class="fighter-hud">
+                    <div class="name" id="name-a1">ALLY1</div>
+                    <div class="bar">
+                        <div class="hp" id="hp-a1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-ui">
+                <div id="round-banner">Listo</div>
+                <div id="timer">90</div>
+            </div>
+
+            <div class="team team-right">
+                <div class="fighter-hud">
+                    <div class="name" id="name-a2">ALLY2</div>
+                    <div class="bar">
+                        <div class="hp" id="hp-a2"></div>
+                    </div>
+                </div>
+                <div class="fighter-hud">
+                    <div class="name" id="name-p2">P2</div>
+                    <div class="bar">
+                        <div class="hp" id="hp-p2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="help">
+            <h2>Controles</h2>
+            <div class="cols">
+                <div>
+                    <h3>Jugador 1</h3>
+                    <ul>
+                        <li>A / D: Mover</li>
+                        <li>W: Saltar</li>
+                        <li>F: Ataque</li>
+                        <li>T: Especial</li>
+                        <li>G: Bloquear</li>
+                        <li>Q/E: Cambiar objetivo</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Jugador 2</h3>
+                    <ul>
+                        <li>← / →: Mover</li>
+                        <li>↑: Saltar</li>
+                        <li>K: Ataque</li>
+                        <li>J: Especial</li>
+                        <li>L: Bloquear</li>
+                        <li>O/P: Cambiar objetivo</li>
+                    </ul>
+                </div>
+            </div>
+            <p>H: Mostrar/Ocultar ayuda · R: Reiniciar ronda</p>
+        </section>
+    </main>
+
+    <script src="main.js" defer></script>
+    <noscript>Este juego requiere JavaScript.</noscript>
+    
+</body>
+</html>
+
+

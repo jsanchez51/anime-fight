@@ -1,0 +1,35 @@
+{
+  "frames": [
+    {
+      "filename": "attack2_001_nobg_nobg.png",
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 512,
+        "h": 896
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 512,
+        "h": 896
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 896
+      }
+    }
+  ],
+  "meta": {
+    "app": "spritebuilder",
+    "version": "1.0",
+    "image": "attack2.png",
+    "size": {
+      "w": 4114,
+      "h": 900
+    },
+    "scale": "1"
+  }
+}

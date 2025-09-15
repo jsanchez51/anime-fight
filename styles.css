@@ -1,0 +1,118 @@
+#postgame[aria-hidden="true"] { display:none; }
+#postgame[aria-hidden="false"] { display:flex; }
+
+/* Botones de postgame */
+#postgame { z-index: 10; }
+#postgame > div { transform: translateY(40px); }
+#postgame button {
+  font-size: clamp(14px, 1.6vw, 18px);
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  color: #eaf2ff;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+#postgame button:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.35); }
+#postgame button:active { transform: translateY(1px); }
+#postgame button + button { margin-left: 12px; }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg: #0e0f1a;
+  --ink: #eaf2ff;
+  --sub: #9bb0ff;
+  --accent: #6cf0ff;
+  --team-left: #6cf06c;
+  --team-right: #ff6c9b;
+  --hp-back: #2b2e4a;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 50% 100%, #181a2a 0%, var(--bg) 60%);
+  color: var(--ink);
+  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  overflow: hidden;
+}
+
+#parallax { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
+.layer { position: absolute; inset: -10%; background-repeat: repeat-x; background-size: cover; opacity: .5; filter: blur(0.3px) saturate(1.2); }
+.layer-back { background-image: linear-gradient(180deg, #0a0b14 0%, #111325 100%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400"><g fill="%231a1d38"><rect width="1200" height="400"/></g></svg>'); }
+.layer-mid { background-image: radial-gradient(1000px 200px at 50% 90%, rgba(108,240,255,.12), transparent 60%), linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); mix-blend-mode: screen; }
+.layer-front { background-image: radial-gradient(400px 120px at 50% 90%, rgba(255,108,155,.08), transparent 60%); mix-blend-mode: screen; }
+
+#game-root { position: relative; width: 100vw; height: 100vh; display: grid; place-items: center; z-index: 1; }
+#game { width: min(96vw, 1200px); height: min(60vw, 650px); aspect-ratio: 16/9; background: #000; border-radius: 16px; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03); image-rendering: pixelated; }
+
+#select { position: absolute; inset: 0; display: grid; place-items: center; backdrop-filter: blur(10px); z-index: 3; }
+#select[aria-hidden="true"] { display: none; }
+.select-wrap { width: min(96vw, 1000px); background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.select-wrap header h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
+.select-wrap header p { margin: 4px 0 12px; color: var(--sub); }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.player-col h3 { margin: 0 0 8px; color: var(--accent); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+.char { position: relative; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06); cursor: pointer; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
+.char:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.4); }
+.char.selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(108,240,255,.25) inset; }
+.char .portrait { height: 90px; border-radius: 10px; background: radial-gradient(120px 60px at 50% 120%, rgba(255,255,255,.15), rgba(0,0,0,0)); display: grid; place-items: center; overflow: hidden; }
+.char .name { margin-top: 8px; font-weight: 700; text-align: center; }
+.custom-assets { margin-top: 10px; display: grid; gap: 8px; }
+.asset-row { display: flex; align-items: center; gap: 8px; }
+.asset-row input { display: inline-block; }
+.asset-row button { padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.12); background: rgba(108,240,255,.12); color: var(--ink); cursor: pointer; }
+.preview { width: 100%; max-height: 140px; object-fit: contain; border-radius: 8px; border: 1px solid rgba(255,255,255,.06); display: none; }
+.actions { display: grid; place-items: center; margin-top: 12px; }
+.actions button { padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); color: var(--ink); font-weight: 700; cursor: pointer; }
+.actions button[disabled] { opacity: .5; cursor: not-allowed; }
+
+#hud { position: absolute; inset: 0; pointer-events: none; padding: 16px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 12px; }
+.team { display: grid; gap: 8px; }
+.fighter-hud { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 8px; }
+.fighter-hud .name { font-weight: 800; letter-spacing: .5px; color: var(--sub); text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+.fighter-hud .bar { width: 100%; height: 16px; background: var(--hp-back); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.06); box-shadow: inset 0 2px 6px rgba(0,0,0,.5); }
+.fighter-hud .hp { height: 100%; width: 100%; transform-origin: left center; background: linear-gradient(90deg, rgba(255,255,255,.2), rgba(255,255,255,0)), linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.05)), #6cf0ff; box-shadow: inset 0 -2px 6px rgba(0,0,0,.4), 0 0 14px rgba(108,240,255,.5); transition: transform .18s ease-out, background .2s ease-out; }
+.team-left .hp { background: linear-gradient(90deg, rgba(255,255,255,.2), rgba(255,255,255,0)), linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.05)), var(--team-left); box-shadow: inset 0 -2px 6px rgba(0,0,0,.4), 0 0 14px rgba(108,255,108,.35); }
+.team-right .hp { background: linear-gradient(90deg, rgba(255,255,255,.2), rgba(255,255,255,0)), linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.05)), var(--team-right); box-shadow: inset 0 -2px 6px rgba(0,0,0,.4), 0 0 14px rgba(255,108,155,.35); transform-origin: right center; }
+
+.center-ui { display: grid; place-items: center; gap: 4px; }
+#timer { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; letter-spacing: 1px; padding: 6px 12px; border-radius: 8px; background: rgba(0,0,0,.45); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+#round-banner { font-weight: 800; letter-spacing: 2px; font-size: 20px; text-transform: uppercase; color: var(--accent); text-shadow: 0 2px 14px rgba(108,240,255,.6); }
+
+#help { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(96vw, 1000px); background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: clamp(8px, 1.2vw, 16px); backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,.4); pointer-events: auto; }
+#help h2 { margin: 0 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--sub); }
+#help .cols { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: clamp(8px, 1.2vw, 16px); }
+#help h3 { margin: 6px 0; font-size: clamp(12px, 1.4vw, 14px); color: var(--accent); }
+#help ul { margin: 0; padding-left: 16px; line-height: 1.5; font-size: clamp(11px, 1.3vw, 13px); }
+#help p { margin: 8px 0 0; opacity: .8; font-size: 12px; }
+
+@media (max-width: 900px) {
+  #game { width: 98vw; height: auto; }
+  .fighter-hud { grid-template-columns: 56px 1fr; }
+  .fighter-hud .name { font-size: 12px; }
+  .fighter-hud .bar { height: 12px; }
+}
+
+@media (max-width: 700px) {
+  .select-wrap { width: 96vw; padding: 12px; }
+  .select-wrap header h1 { font-size: 18px; }
+  .select-wrap header p { font-size: 12px; }
+  .char { padding: 10px; }
+  .char .portrait { height: 72px; }
+  .grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
+  .preview { max-height: 110px; }
+  .selected-row { flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 420px) {
+  .char .portrait { height: 64px; }
+  .grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 6px; }
+  .preview { max-height: 96px; }
+}
+
+

@@ -792,7 +792,8 @@ const ui = {
   },
   buttons: {
     openSelect: document.getElementById('btn-open-select'),
-  }
+  },
+  touch: { root: document.getElementById('touch-controls') }
 };
 
 function toggleHelp() {
@@ -1127,6 +1128,9 @@ function frame() {
   // render
   ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
   ctx.save();
+  // detectar móvil para UI táctil
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (ui.touch?.root) ui.touch.root.setAttribute('aria-hidden', isTouch ? 'false' : 'true');
   if (game.state === 'playing') {
     applyCamera(ctx);
     drawStage(ctx);
@@ -1198,5 +1202,25 @@ ui.buttons.openSelect?.addEventListener('click', () => {
   game.state = 'select';
   showSelect(true);
 });
+
+// Habilitar controles táctiles para P1 y forzar P2 como CPU en móviles
+(function initTouchControls(){
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (!isTouch) return;
+  // fuerza 1v1 y CPU para P2
+  game.mode = '1v1';
+  try { if (ui.select.mode) ui.select.mode.value = '1v1'; } catch {}
+  // Mapear botones touch -> teclas de P1
+  const map = { left:'a', right:'d', up:'w', down:'s', attack:'f', special:'t', block:'g' };
+  function bind(el){
+    const act = el.dataset.act; const key = map[act]; if (!key) return;
+    const press = () => { input.keys.add(key); input.pressed.add(key); };
+    const release = () => { input.keys.delete(key); };
+    el.addEventListener('touchstart', (e)=>{ e.preventDefault(); press(); }, { passive:false });
+    el.addEventListener('touchend', (e)=>{ e.preventDefault(); release(); }, { passive:false });
+    el.addEventListener('touchcancel', (e)=>{ e.preventDefault(); release(); }, { passive:false });
+  }
+  try { document.querySelectorAll('#touch-controls [data-act]')?.forEach(bind); } catch {}
+})();
 
 

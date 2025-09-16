@@ -98,6 +98,11 @@ body {
 #help ul { margin: 0; padding-left: 16px; line-height: 1.5; font-size: clamp(11px, 1.3vw, 13px); }
 #help p { margin: 8px 0 0; opacity: .8; font-size: 12px; }
 
+#touch-controls { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px; display: grid; gap: 8px; pointer-events: none; }
+#touch-controls[aria-hidden="true"] { display: none; }
+#touch-controls .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+#touch-controls button { pointer-events: auto; padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.35); color: #eaf2ff; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+
 @media (max-width: 900px) {
   #game { width: 98vw; height: auto; }
   body { overflow: auto; }

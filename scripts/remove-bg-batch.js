@@ -16,24 +16,29 @@ function listPngsRec(dir) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const root = path.resolve(args[0] || 'sprites');
+  const roots = args.filter(a => !a.startsWith('--'));
+  const rootList = roots.length ? roots.map(r => path.resolve(r)) : [path.resolve('sprites')];
   const writeMode = args.includes('--copy') ? 'copy' : 'inplace';
   const suffix = args.includes('--copy') ? '_nobg' : '';
-  const files = listPngsRec(root);
   let ok = 0;
-  for (const file of files) {
-    try {
-      const img = await edgeKeyBackground(file);
-      let out = file;
-      if (writeMode === 'copy') out = file.replace(/\.png$/i, `${suffix}.png`);
-      await img.writeAsync(out);
-      ok++;
-      if (ok % 20 === 0) console.log(`✔ procesadas ${ok}/${files.length}`);
-    } catch (e) {
-      console.warn(`falló ${file}: ${e.message}`);
+  let total = 0;
+  for (const root of rootList) {
+    const files = listPngsRec(root).filter(f => !/_nobg\.png$/i.test(f));
+    total += files.length;
+    for (const file of files) {
+      try {
+        const img = await edgeKeyBackground(file);
+        let out = file;
+        if (writeMode === 'copy') out = file.replace(/\.png$/i, `${suffix}.png`);
+        await img.writeAsync(out);
+        ok++;
+        if (ok % 20 === 0) console.log(`✔ procesadas ${ok}/${total}`);
+      } catch (e) {
+        console.warn(`falló ${file}: ${e.message}`);
+      }
     }
   }
-  console.log(`✔ Completado: ${ok}/${files.length} PNGs`);
+  console.log(`✔ Completado: ${ok}/${total} PNGs`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "run_001.png",
+      "filename": "run_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "run_002.png",
+      "filename": "run_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "filename": "run_003.png",
+      "filename": "run_003_nobg.png",
       "frame": {
         "x": 1030,
         "y": 2,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "filename": "run_004.png",
+      "filename": "run_004_nobg.png",
       "frame": {
         "x": 1544,
         "y": 2,

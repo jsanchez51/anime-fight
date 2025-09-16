@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "crouch_001.png",
+      "filename": "crouch_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "crouch_002.png",
+      "filename": "crouch_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,

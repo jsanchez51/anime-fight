@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "idle_001.png",
+      "filename": "idle_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "idle_002.png",
+      "filename": "idle_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "filename": "idle_003.png",
+      "filename": "idle_003_nobg.png",
       "frame": {
         "x": 1030,
         "y": 2,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "filename": "idle_004.png",
+      "filename": "idle_004_nobg.png",
       "frame": {
         "x": 1544,
         "y": 2,

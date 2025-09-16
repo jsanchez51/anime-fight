@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "jump_001.png",
+      "filename": "jump_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "jump_002.png",
+      "filename": "jump_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "filename": "jump_003.png",
+      "filename": "jump_003_nobg.png",
       "frame": {
         "x": 1030,
         "y": 2,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "filename": "jump_004.png",
+      "filename": "jump_004_nobg.png",
       "frame": {
         "x": 1544,
         "y": 2,

@@ -1,0 +1,35 @@
+{
+  "frames": [
+    {
+      "filename": "sukuna_izquierda_nobg.png",
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 1024,
+        "h": 1536
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1024,
+        "h": 1536
+      },
+      "sourceSize": {
+        "w": 1024,
+        "h": 1536
+      }
+    }
+  ],
+  "meta": {
+    "app": "spritebuilder",
+    "version": "1.0",
+    "image": "idle_right.png",
+    "size": {
+      "w": 8210,
+      "h": 1540
+    },
+    "scale": "1"
+  }
+}

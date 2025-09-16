@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "slide_001.png",
+      "filename": "slide_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "slide_002.png",
+      "filename": "slide_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,

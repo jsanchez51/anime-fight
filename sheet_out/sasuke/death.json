@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "death_001.png",
+      "filename": "death_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "death_002.png",
+      "filename": "death_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "filename": "death_003.png",
+      "filename": "death_003_nobg.png",
       "frame": {
         "x": 1030,
         "y": 2,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "filename": "death_004.png",
+      "filename": "death_004_nobg.png",
       "frame": {
         "x": 1544,
         "y": 2,

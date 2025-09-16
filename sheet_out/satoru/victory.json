@@ -1,87 +1,24 @@
 {
   "frames": [
     {
-      "filename": "victory_001.png",
+      "filename": "satoru_feliz_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
-        "w": 512,
-        "h": 768
+        "w": 1024,
+        "h": 1536
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 512,
-        "h": 768
+        "w": 1024,
+        "h": 1536
       },
       "sourceSize": {
-        "w": 512,
-        "h": 768
-      }
-    },
-    {
-      "filename": "victory_002.png",
-      "frame": {
-        "x": 516,
-        "y": 2,
-        "w": 512,
-        "h": 768
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 512,
-        "h": 768
-      },
-      "sourceSize": {
-        "w": 512,
-        "h": 768
-      }
-    },
-    {
-      "filename": "victory_003.png",
-      "frame": {
-        "x": 1030,
-        "y": 2,
-        "w": 512,
-        "h": 768
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 512,
-        "h": 768
-      },
-      "sourceSize": {
-        "w": 512,
-        "h": 768
-      }
-    },
-    {
-      "filename": "victory_004.png",
-      "frame": {
-        "x": 1544,
-        "y": 2,
-        "w": 512,
-        "h": 768
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 512,
-        "h": 768
-      },
-      "sourceSize": {
-        "w": 512,
-        "h": 768
+        "w": 1024,
+        "h": 1536
       }
     }
   ],
@@ -90,8 +27,8 @@
     "version": "1.0",
     "image": "victory.png",
     "size": {
-      "w": 4114,
-      "h": 772
+      "w": 8210,
+      "h": 1540
     },
     "scale": "1"
   }

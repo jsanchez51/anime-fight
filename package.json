@@ -12,7 +12,9 @@
     "flip": "node scripts/flip-sprites.js",
     "derive": "node scripts/derive-variants.js",
     "rm-bg": "node scripts/remove-bg.js",
-    "rm-bg:batch": "node scripts/remove-bg-batch.js sprites/nobara --copy"
+    "rm-bg:batch": "node scripts/remove-bg-batch.js",
+    "sync:idle": "node scripts/sync-idle-lr.js",
+    "rm-bg:folder": "node scripts/rm-bg-folder.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

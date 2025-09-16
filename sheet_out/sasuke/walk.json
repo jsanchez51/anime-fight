@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "walk_001.png",
+      "filename": "walk_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "walk_002.png",
+      "filename": "walk_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "filename": "walk_003.png",
+      "filename": "walk_003_nobg.png",
       "frame": {
         "x": 1030,
         "y": 2,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "filename": "walk_004.png",
+      "filename": "walk_004_nobg.png",
       "frame": {
         "x": 1544,
         "y": 2,

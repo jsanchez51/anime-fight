@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "hit_001.png",
+      "filename": "hit_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "hit_002.png",
+      "filename": "hit_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,7 +43,7 @@
       }
     },
     {
-      "filename": "hit_003.png",
+      "filename": "hit_003_nobg.png",
       "frame": {
         "x": 1030,
         "y": 2,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "filename": "hit_004.png",
+      "filename": "hit_004_nobg.png",
       "frame": {
         "x": 1544,
         "y": 2,

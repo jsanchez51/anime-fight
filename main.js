@@ -728,7 +728,9 @@ function setupScene() {
   const baseP1 = { x: 300, y: 600, team: 'L', isPlayer: true,  controls: { left: 'a', right: 'd', up: 'w', down: 's', attack: 'f', special: 't', block: 'g' } };
   const baseA1 = { x: 220, y: 600, team: 'L', isPlayer: false };
   const baseA2 = { x: 980, y: 600, team: 'R', isPlayer: false };
-  const baseP2 = { x: 1060, y: 600, team: 'R', isPlayer: false, controls: { left: 'j', right: 'l', up: 'i', down: 'k', attack: 'k', special: 'o', block: 'p' } };
+  // P2 control configurable en 1v1
+  const p2IsHuman = game.mode === '1v1' && ui.select.p2Control && ui.select.p2Control.value === 'human';
+  const baseP2 = { x: 1060, y: 600, team: 'R', isPlayer: p2IsHuman, controls: { left: p2IsHuman ? 'arrowleft' : 'j', right: p2IsHuman ? 'arrowright' : 'l', up: p2IsHuman ? 'arrowup' : 'i', down: p2IsHuman ? 'arrowdown' : 'k', attack: p2IsHuman ? 'k' : 'k', special: p2IsHuman ? 'j' : 'o', block: p2IsHuman ? 'l' : 'p' } };
 
   const p1Char = selection.p1 || ROSTER[0];
   const p2Char = selection.p2 || ROSTER[2];
@@ -740,8 +742,8 @@ function setupScene() {
   const R2 = createFighterFromChar(p2Char, baseP2);
   fighters.push(L1, R2);
   if (game.mode === '2v2') {
-    const L2 = createFighterFromChar(allyL, baseA1);
-    const R1 = createFighterFromChar(allyR, baseA2);
+  const L2 = createFighterFromChar(allyL, baseA1);
+  const R1 = createFighterFromChar(allyR, baseA2);
     fighters.splice(1, 0, L2); // L1, L2, R1, R2 orden cercano al original
     fighters.splice(2, 0, R1);
   }
@@ -772,7 +774,11 @@ const ui = {
     singlePreview: null,
     p1Selected: document.getElementById('p1-selected-preview'),
     p2Selected: document.getElementById('p2-selected-preview'),
+    p1SelectedName: document.getElementById('p1-selected-name'),
+    p2SelectedName: document.getElementById('p2-selected-name'),
     mode: document.getElementById('mode-select'),
+    p2ControlWrap: document.getElementById('p2-control-wrap'),
+    p2Control: document.getElementById('p2-control-select'),
     difficulty: document.getElementById('difficulty-select'),
     world: document.getElementById('world-select'),
     p1grid: document.getElementById('p1-grid'),
@@ -784,6 +790,9 @@ const ui = {
     replay: document.getElementById('btn-replay'),
     reselect: document.getElementById('btn-reselect'),
   },
+  buttons: {
+    openSelect: document.getElementById('btn-open-select'),
+  }
 };
 
 function toggleHelp() {
@@ -823,6 +832,11 @@ function setSelectedPreview(side) {
   const ch = side === 'p1' ? selection.p1 : selection.p2;
   if (!target || !ch) return;
   target.style.display = 'block';
+  // nombre debajo de la imagen
+  try {
+    const nameEl = side === 'p1' ? ui.select.p1SelectedName : ui.select.p2SelectedName;
+    if (nameEl) nameEl.textContent = ch.name || '';
+  } catch {}
   // intenta portrait curado primero, luego idle sheet
   const portrait = `assets/portraits/${ch.id}.png`;
   const fallback = `sheet_out/${ch.id}/idle.png`;
@@ -859,6 +873,8 @@ try { const w = localStorage.getItem('world'); if (w) game.world = w; } catch {}
 try { const t = localStorage.getItem('tod'); if (t) game.tod = t; } catch {}
 ui.select.mode?.addEventListener('change', (e) => {
   game.mode = e.target.value === '1v1' ? '1v1' : '2v2';
+  // mostrar selector de control para P2 solo en 1v1
+  if (ui.select.p2ControlWrap) ui.select.p2ControlWrap.style.display = game.mode === '1v1' ? 'inline-block' : 'none';
 });
 ui.select.difficulty?.addEventListener('change', (e) => {
   const val = String(e.target.value || 'normal');
@@ -963,17 +979,17 @@ async function useLocalSprites(side) {
   updateSelectState();
 
   const charObj = side === 'p1' ? selection.p1 : selection.p2;
-  const prev = side === 'p1' ? ui.select.p1Preview : ui.select.p2Preview;
+        const prev = side === 'p1' ? ui.select.p1Preview : ui.select.p2Preview;
   const info = await localSheetPreviewFor(charObj);
   if (!info) {
     alert('No hay sprites locales para este personaje. Genera primero con los scripts.');
     return;
   }
   // Mostrar el PNG del sheet como preview
-  prev.style.display = 'block';
+        prev.style.display = 'block';
   prev.src = info.pngUrl;
   customSprites[side] = null;
-  updateSelectState();
+        updateSelectState();
 }
 
 // botones de usar sprites locales eliminados
@@ -1118,15 +1134,30 @@ function frame() {
     drawProjectiles(ctx);
     drawEffects(ctx);
   } else if (game.state === 'over') {
-    // mostrar escena con poses de victory/death activas ya dibujadas
+    // mostrar escena pero sin estelas ni golpes: congelar sprites finales
     drawStage(ctx);
-    for (const f of fighters) f.draw(ctx);
+    for (const f of fighters) {
+      const bodyW = f.w, bodyH = f.h;
+      const x = f.x - bodyW / 2, y = f.y - bodyH;
+      const drawn = f.anim.draw(ctx, x, y, bodyW, bodyH, f.dir);
+      if (!drawn) {
+        const prefer = f.dir < 0 ? 'idle_left' : 'idle_right';
+        const idleSheet = getSheet(f.charId, prefer) || getSheet(f.charId, 'idle');
+        if (idleSheet && idleSheet.frames?.length) {
+          const fr = idleSheet.frames[0].frame;
+          const flip = f.dir < 0 ? -1 : 1;
+          const destW = flip < 0 ? -bodyW : bodyW;
+          const destX = flip < 0 ? x + bodyW : x;
+          ctx.drawImage(idleSheet.image, fr.x, fr.y, fr.w, fr.h, destX, y, destW, bodyH);
+        }
+      }
+    }
     // overlay de texto
     const text = game.announcerText.includes('Izq') ? '¡GANASTE!' : game.announcerText.includes('Der') ? '¡PERDISTE!' : game.announcerText;
-    ctx.fillStyle = 'rgba(0,0,0,0.35)';
-    ctx.fillRect(BASE_WIDTH/2 - 320, BASE_HEIGHT/2 - 120, 640, 240);
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx.strokeRect(BASE_WIDTH/2 - 320, BASE_HEIGHT/2 - 120, 640, 240);
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(BASE_WIDTH/2 - 380, BASE_HEIGHT/2 - 140, 760, 280);
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.strokeRect(BASE_WIDTH/2 - 380, BASE_HEIGHT/2 - 140, 760, 280);
     ctx.font = 'bold 48px Montserrat, Arial';
     ctx.fillStyle = '#eaf2ff';
     ctx.textAlign = 'center';
@@ -1160,6 +1191,12 @@ ui.post.reselect?.addEventListener('click', () => {
   game.state = 'select';
   showSelect(true);
   if (ui.post?.root) ui.post.root.setAttribute('aria-hidden', 'true');
+});
+
+// Botón HUD para volver a selección en cualquier momento
+ui.buttons.openSelect?.addEventListener('click', () => {
+  game.state = 'select';
+  showSelect(true);
 });
 
 

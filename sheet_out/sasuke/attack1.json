@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "attack1_001.png",
+      "filename": "attack1_001_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "attack1_002.png",
+      "filename": "attack1_002_nobg.png",
       "frame": {
         "x": 516,
         "y": 2,
@@ -43,30 +43,9 @@
       }
     },
     {
-      "filename": "attack1_003.png",
+      "filename": "attack1_003_nobg.png",
       "frame": {
         "x": 1030,
-        "y": 2,
-        "w": 512,
-        "h": 768
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 512,
-        "h": 768
-      },
-      "sourceSize": {
-        "w": 512,
-        "h": 768
-      }
-    },
-    {
-      "filename": "attack1_004.png",
-      "frame": {
-        "x": 1544,
         "y": 2,
         "w": 512,
         "h": 768

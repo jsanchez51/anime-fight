@@ -50,7 +50,7 @@ const DEFAULT_ACTIONS = {
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const options = { frames: 4, outdir: 'sprites', actions: Object.keys(DEFAULT_ACTIONS), force: false, removeBg: false, ensureSingle: true };
+  const options = { frames: 4, outdir: 'sprites', actions: Object.keys(DEFAULT_ACTIONS), force: false, removeBg: false, ensureSingle: true, resetSeed: false };
   const names = [];
   for (const arg of args) {
     if (arg.startsWith('--frames=')) options.frames = Number(arg.split('=')[1]) || 4;
@@ -60,6 +60,7 @@ function parseArgs() {
     else if (arg.startsWith('--height=')) options.height = Number(arg.split('=')[1]) || undefined;
     else if (arg === '--force') options.force = true;
     else if (arg === '--remove-bg' || arg === '--removeBg') options.removeBg = true;
+    else if (arg === '--reset-seed' || arg === '--resetSeed') options.resetSeed = true;
     else if (arg === '--no-ensure-single') options.ensureSingle = false;
     else names.push(arg);
   }
@@ -96,12 +97,12 @@ async function edgeKeyBackground(filePath, opts = {}) {
 }
 
 async function main() {
-  const { characters, actions, frames, outdir, width, height, force, removeBg, ensureSingle } = parseArgs();
+  const { characters, actions, frames, outdir, width, height, force, removeBg, ensureSingle, resetSeed } = parseArgs();
   console.log(`Generando sprites: chars=${characters.join(', ')} actions=${actions.join(', ')} frames=${frames}`);
   ensureDir(outdir);
   const manifestPath = path.join(outdir, 'seeds.json');
   let seeds = {};
-  if (fs.existsSync(manifestPath)) {
+  if (fs.existsSync(manifestPath) && !resetSeed) {
     try { seeds = JSON.parse(await fs.promises.readFile(manifestPath, 'utf8')); } catch {}
   }
   const getKey = (c, a, i) => `${c}/${a}/${i}`;

@@ -6,11 +6,10 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-async function loadImagesFromDir(dir) {
+async function loadImagesFromDir(dir, preferNobg = true) {
   const all = (await fs.promises.readdir(dir)).filter(f => f.toLowerCase().endsWith('.png')).sort();
-  // Priorizar variantes sin fondo si existen
   const nobg = all.filter(f => f.toLowerCase().includes('nobg'));
-  const files = nobg.length ? nobg : all;
+  const files = preferNobg ? (nobg.length ? nobg : all) : all.filter(f => !f.toLowerCase().includes('nobg'));
   const images = [];
   for (const file of files) {
     const p = path.join(dir, file);
@@ -22,7 +21,7 @@ async function loadImagesFromDir(dir) {
 
 async function buildSheetForAction(inputDir, outPng, outJson, options = {}) {
   const margin = options.margin || 2;
-  const images = await loadImagesFromDir(inputDir);
+  const images = await loadImagesFromDir(inputDir, options.preferNobg !== false);
   if (!images.length) return false;
 
   // Usa el tamaño del primer frame como referencia
@@ -71,7 +70,7 @@ async function buildSheetForAction(inputDir, outPng, outJson, options = {}) {
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const options = { root: 'sprites', outdir: 'sheets', cols: 8, margin: 2, force: false };
+  const options = { root: 'sprites', outdir: 'sheets', cols: 8, margin: 2, force: false, preferNobg: true };
   const names = [];
   for (const arg of args) {
     if (arg.startsWith('--root=')) options.root = arg.split('=')[1];
@@ -79,6 +78,7 @@ function parseArgs() {
     else if (arg.startsWith('--cols=')) options.cols = Number(arg.split('=')[1]) || 8;
     else if (arg.startsWith('--margin=')) options.margin = Number(arg.split('=')[1]) || 2;
     else if (arg === '--force') options.force = true;
+    else if (arg === '--prefer-nobg=false') options.preferNobg = false;
     else names.push(arg);
   }
   options.characters = names.length ? names : fs.existsSync(options.root) ? fs.readdirSync(options.root) : [];
@@ -86,7 +86,7 @@ function parseArgs() {
 }
 
 async function main() {
-  const { root, outdir, cols, margin, characters, force } = parseArgs();
+  const { root, outdir, cols, margin, characters, force, preferNobg } = parseArgs();
   if (!characters.length) {
     console.error('No se encontraron personajes. Ejecuta primero el batch de sprites.');
     process.exit(1);
@@ -99,7 +99,7 @@ async function main() {
       const inputDir = path.join(charDir, action);
       const outPng = path.join(outdir, characterId, `${action}.png`);
       const outJson = path.join(outdir, characterId, `${action}.json`);
-      const ok = await buildSheetForAction(inputDir, outPng, outJson, { cols, margin, force });
+      const ok = await buildSheetForAction(inputDir, outPng, outJson, { cols, margin, force, preferNobg });
       if (ok) {
         console.log(`✔ spritesheet ${characterId}/${action}`);
       } else {

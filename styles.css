@@ -45,6 +45,7 @@ body {
   font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial;
   overflow: hidden;
   overscroll-behavior: none; /* evita pull-to-refresh en móvil */
+  touch-action: manipulation; /* evita zoom y gestos no deseados */
 }
 
 #parallax { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
@@ -125,7 +126,7 @@ body {
   .char .portrait { height: 72px; }
   .grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
   .preview { max-height: 110px; }
-  .selected-row { flex-direction: column; gap: 8px; }
+  .selected-row { flex-direction: row !important; gap: 8px !important; justify-content: space-around !important; }
 }
 
 @media (max-width: 420px) {

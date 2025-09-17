@@ -1128,9 +1128,10 @@ function frame() {
   // render
   ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
   ctx.save();
-  // detectar móvil para UI táctil
+  // detectar móvil para UI táctil (solo mostrar en juego activo)
   const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(max-width: 850px)').matches);
-  if (ui.touch?.root) ui.touch.root.setAttribute('aria-hidden', isTouch ? 'false' : 'true');
+  const showTouchControls = isTouch && game.state === 'playing';
+  if (ui.touch?.root) ui.touch.root.setAttribute('aria-hidden', showTouchControls ? 'false' : 'true');
   if (game.state === 'playing') {
     applyCamera(ctx);
     drawStage(ctx);

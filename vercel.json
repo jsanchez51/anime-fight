@@ -4,7 +4,8 @@
     { "src": "styles.css", "use": "@vercel/static" },
     { "src": "main.js", "use": "@vercel/static" },
     { "src": "assets/**", "use": "@vercel/static" },
-    { "src": "sheet_out/**", "use": "@vercel/static" }
+    { "src": "sheet_out/**", "use": "@vercel/static" },
+    { "src": "ads.txt", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/$1" }

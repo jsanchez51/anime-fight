@@ -111,9 +111,9 @@ body {
 
 /* Ajuste para horizontal: botones más pequeños y en los lados */
 @media (orientation: landscape) and (max-height: 500px) {
-  #touch-controls { padding: 6px; gap: 6px; }
-  #touch-controls .row { gap: 6px; }
-  #touch-controls button { padding: 8px; font-size: 12px; }
+  #touch-controls { padding: 6px; gap: 6px; display: grid; grid-template-columns: 1fr 1fr; /* 2 columnas */ align-items: end; }
+  #touch-controls .row { display: flex; flex-direction: column; gap: 6px; }
+  #touch-controls button { padding: 8px; font-size: 12px; height: 100%; }
 }
 
 @media (max-width: 900px) {

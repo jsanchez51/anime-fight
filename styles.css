@@ -45,7 +45,7 @@ body {
   font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial;
   overflow: hidden;
   overscroll-behavior: none; /* evita pull-to-refresh en móvil */
-  touch-action: manipulation; /* evita zoom y gestos no deseados */
+  touch-action: pan-y; /* permite scroll vertical, evita zoom */
 }
 
 #parallax { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
@@ -108,6 +108,13 @@ body {
 #touch-controls[aria-hidden="true"] { display: none; }
 #touch-controls .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 #touch-controls button { pointer-events: auto; padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.35); color: #eaf2ff; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+
+/* Ajuste para horizontal: botones más pequeños y en los lados */
+@media (orientation: landscape) and (max-height: 500px) {
+  #touch-controls { padding: 6px; gap: 6px; }
+  #touch-controls .row { gap: 6px; }
+  #touch-controls button { padding: 8px; font-size: 12px; }
+}
 
 @media (max-width: 900px) {
   #game { width: 98vw; height: auto; }

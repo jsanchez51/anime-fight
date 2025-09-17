@@ -369,13 +369,13 @@ class Fighter extends Entity {
       // Enemigo quieto para pruebas: no se mueve ni ataca
       this.vx = 0; this.blocking = false; return;
     }
-    // ajustar comportamiento según dificultad global
+    // ajustar comportamiento según dificultad global (más lento en ataques)
     if (game.difficulty === 'easy') {
-      this.ai = { aggression: 0.45, defense: 0.4, jumpiness: 0.4 };
+      this.ai = { aggression: 0.25, defense: 0.3, jumpiness: 0.3 };
     } else if (game.difficulty === 'hard') {
-      this.ai = { aggression: 1.4, defense: 1.3, jumpiness: 1.2 };
+      this.ai = { aggression: 0.8, defense: 1.1, jumpiness: 0.9 };
     } else {
-      this.ai = { aggression: 1.0, defense: 1.0, jumpiness: 1.0 };
+      this.ai = { aggression: 0.5, defense: 0.7, jumpiness: 0.6 };
     }
     // Objetivo: enemigo más cercano vivo
     if (!this.target || !this.target.alive) {
@@ -388,12 +388,13 @@ class Fighter extends Entity {
     const abs = Math.abs(dist);
     if (abs > 140) {
       this.vx += 900 * this.ai.aggression * Math.sign(dist);
-    } else if (this.atkCooldown <= 0) {
+    } else if (this.atkCooldown <= 0 && Math.random() < 0.015 * this.ai.aggression) {
+      // Ataque con probabilidad reducida para evitar spam
       this.attack();
     } else {
-      this.blocking = Math.random() < 0.02 * this.ai.defense; // bloqueos aleatorios
+      this.blocking = Math.random() < 0.015 * this.ai.defense; // bloqueos aleatorios
     }
-    if (Math.random() < 0.005 * this.ai.jumpiness && this.grounded) this.jump();
+    if (Math.random() < 0.003 * this.ai.jumpiness && this.grounded) this.jump();
   }
 
   handleInput() {

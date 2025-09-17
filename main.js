@@ -1129,7 +1129,7 @@ function frame() {
   ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
   ctx.save();
   // detectar móvil para UI táctil
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(max-width: 850px)').matches);
   if (ui.touch?.root) ui.touch.root.setAttribute('aria-hidden', isTouch ? 'false' : 'true');
   if (game.state === 'playing') {
     applyCamera(ctx);
@@ -1205,7 +1205,7 @@ ui.buttons.openSelect?.addEventListener('click', () => {
 
 // Habilitar controles táctiles para P1 y forzar P2 como CPU en móviles
 (function initTouchControls(){
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(max-width: 850px)').matches);
   if (!isTouch) return;
   // fuerza 1v1 y CPU para P2
   game.mode = '1v1';

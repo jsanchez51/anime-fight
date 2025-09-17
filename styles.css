@@ -91,14 +91,14 @@ body {
 #timer { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; letter-spacing: 1px; padding: 6px 12px; border-radius: 8px; background: rgba(0,0,0,.45); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 #round-banner { font-weight: 800; letter-spacing: 2px; font-size: 20px; text-transform: uppercase; color: var(--accent); text-shadow: 0 2px 14px rgba(108,240,255,.6); }
 
-#help { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(96vw, 1000px); max-height: 36vh; overflow:auto; -webkit-overflow-scrolling: touch; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: clamp(8px, 1.2vw, 16px); backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,.4); pointer-events: auto; }
+#help { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(96vw, 1000px); max-height: 36vh; overflow:auto; -webkit-overflow-scrolling: touch; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: clamp(8px, 1.2vw, 16px); backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,.4); pointer-events: auto; z-index: 4; }
 #help h2 { margin: 0 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--sub); }
 #help .cols { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: clamp(8px, 1.2vw, 16px); }
 #help h3 { margin: 6px 0; font-size: clamp(12px, 1.4vw, 14px); color: var(--accent); }
 #help ul { margin: 0; padding-left: 16px; line-height: 1.5; font-size: clamp(11px, 1.3vw, 13px); }
 #help p { margin: 8px 0 0; opacity: .8; font-size: 12px; }
 
-#touch-controls { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px; display: grid; gap: 8px; pointer-events: none; }
+#touch-controls { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px; display: grid; gap: 8px; pointer-events: none; z-index: 5; }
 #touch-controls[aria-hidden="true"] { display: none; }
 #touch-controls .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 #touch-controls button { pointer-events: auto; padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.35); color: #eaf2ff; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.35); }

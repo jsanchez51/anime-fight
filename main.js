@@ -14,6 +14,79 @@ canvas.height = BASE_HEIGHT;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const sign = (v) => (v === 0 ? 0 : v > 0 ? 1 : -1);
+
+// Audio sencillo SOLO para efectos (sin música)
+const audio = {
+  ctx: null,
+  enabled: true,
+  master: null,
+  sfxGain: null,
+  buffers: {},
+  async init() {
+    if (this.ctx) return;
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.9;
+      this.master.connect(this.ctx.destination);
+      this.sfxGain = this.ctx.createGain();
+      this.sfxGain.gain.value = 0.9;
+      this.sfxGain.connect(this.master);
+    } catch {}
+  },
+  async load(name, url) {
+    if (!this.ctx || this.buffers[name]) return this.buffers[name];
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const ab = await res.arrayBuffer();
+      const buf = await this.ctx.decodeAudioData(ab);
+      this.buffers[name] = buf; return buf;
+    } catch { return null; }
+  },
+  async ensureBaseSfx() {
+    const base = [
+      ['attack', 'assets/sfx/attack.wav'],
+      ['hit', 'assets/sfx/hit.wav'],
+      ['jump', 'assets/sfx/jump.wav']
+    ];
+    await Promise.all(base.map(([n, u]) => this.load(n, u)));
+  },
+  play(name, { volume = 1, rate = 1 } = {}) {
+    if (!this.enabled) return;
+    if (!this.ctx) return;
+    const buf = this.buffers[name];
+    if (buf) {
+      const src = this.ctx.createBufferSource();
+      src.buffer = buf; src.playbackRate.value = rate;
+      const g = this.ctx.createGain(); g.gain.value = volume;
+      src.connect(g); g.connect(this.sfxGain);
+      src.start();
+    } else {
+      // Fallback simple tipo beep si no hay archivo
+      try {
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain(); g.gain.value = 0.12 * volume;
+        osc.type = 'square'; osc.frequency.value = 660;
+        osc.connect(g); g.connect(this.sfxGain);
+        osc.start(); osc.stop(this.ctx.currentTime + 0.08);
+      } catch {}
+    }
+  },
+  setEnabled(on) {
+    this.enabled = !!on;
+    if (this.ctx) this.master.gain.value = this.enabled ? 0.9 : 0.0;
+  }
+};
+
+// Bootstrap de audio: inicializar en primera interacción
+let _audioBootstrapped = false;
+async function initAudioOnce() {
+  if (_audioBootstrapped) return;
+  _audioBootstrapped = true;
+  await audio.init();
+  await audio.ensureBaseSfx();
+}
 const now = () => performance.now();
 // Acciones que deben usar solo el primer frame (por personaje)
 // Cargadas desde assets/anim-config.json. Si falla, usa valores por defecto.
@@ -202,6 +275,7 @@ const input = {
 };
 
 window.addEventListener('keydown', (e) => {
+  initAudioOnce();
   input.keys.add(e.key.toLowerCase());
   input.pressed.add(e.key.toLowerCase());
   if (e.key.toLowerCase() === 'h') toggleHelp();
@@ -427,10 +501,12 @@ class Fighter extends Entity {
   jump() {
     this.vy = -750;
     this.grounded = false;
+    audio.play('jump', { volume: 0.6 });
   }
 
   attack() {
     this.atkCooldown = 0.45;
+    audio.play('attack', { volume: 0.9, rate: 1 + Math.random() * 0.06 - 0.03 });
     // hitbox simple frente al luchador
     const range = 90; const height = 80;
     const hx = this.x + this.dir * (this.w / 2 + range / 2);
@@ -447,6 +523,7 @@ class Fighter extends Entity {
     }
     if (this.invul > 0) return;
     this.hp = Math.max(0, this.hp - dmg);
+    audio.play('hit', { volume: 0.9, rate: 1 + (Math.random() * 0.1 - 0.05) });
     this.vx += -this.dir * kb;
     this.vy -= 120;
     this.invul = 0.18;
@@ -628,6 +705,7 @@ function resolveHit(attacker, hitbox) {
       const kb = 420 + Math.random() * 120;
       f.takeDamage(attacker, dmg, kb);
       if (Math.random() < 0.4) game.announcerText = '¡Golpe!';
+      audio.play('hit', { volume: 0.9 });
     }
   }
 }
@@ -802,6 +880,7 @@ const ui = {
   },
   buttons: {
     openSelect: document.getElementById('btn-open-select'),
+    audio: document.getElementById('btn-audio'),
   },
   touch: { root: document.getElementById('touch-controls') }
 };
@@ -864,11 +943,14 @@ function showSelect(show) {
   ui.select.root.setAttribute('aria-hidden', show ? 'false' : 'true');
   // asegurar que los botones de postgame no aparezcan en selección
   if (ui.post?.root) ui.post.root.setAttribute('aria-hidden', 'true');
+  // detener música al abrir selección
+  if (show) { audio.stopMusic(); }
 }
 
 function startGameFromSelection() {
   if (!(selection.p1 && selection.p2)) return;
   showSelect(false);
+  initAudioOnce();
   resetRound();
   game.state = 'playing';
   game.isRoundActive = true;

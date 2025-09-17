@@ -1,24 +1,24 @@
 {
   "frames": [
     {
-      "filename": "idle_left_001.png",
+      "filename": "Gemini_Generated_Image_vf2lu1vf2lu1vf2l_nobg.png",
       "frame": {
         "x": 2,
         "y": 2,
-        "w": 512,
-        "h": 768
+        "w": 2048,
+        "h": 2048
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 512,
-        "h": 768
+        "w": 2048,
+        "h": 2048
       },
       "sourceSize": {
-        "w": 512,
-        "h": 768
+        "w": 2048,
+        "h": 2048
       }
     }
   ],
@@ -27,8 +27,8 @@
     "version": "1.0",
     "image": "idle_left.png",
     "size": {
-      "w": 4114,
-      "h": 772
+      "w": 16402,
+      "h": 2052
     },
     "scale": "1"
   }

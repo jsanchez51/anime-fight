@@ -72,7 +72,7 @@ body {
 .char { position: relative; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06); cursor: pointer; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
 .char:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.4); }
 .char.selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(108,240,255,.25) inset; }
-.char .portrait { height: 90px; border-radius: 10px; background: radial-gradient(120px 60px at 50% 120%, rgba(255,255,255,.15), rgba(0,0,0,0)); display: grid; place-items: center; overflow: hidden; }
+.char .portrait { aspect-ratio: 1/1; height: auto; border-radius: 10px; background: radial-gradient(120px 60px at 50% 120%, rgba(255,255,255,.15), rgba(0,0,0,0)); display: grid; place-items: center; overflow: hidden; position: relative; }
 .char .name { margin-top: 8px; font-weight: 700; text-align: center; }
 .custom-assets { margin-top: 10px; display: grid; gap: 8px; }
 .asset-row { display: flex; align-items: center; gap: 8px; }
@@ -97,7 +97,7 @@ body {
 #timer { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; letter-spacing: 1px; padding: 6px 12px; border-radius: 8px; background: rgba(0,0,0,.45); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 #round-banner { font-weight: 800; letter-spacing: 2px; font-size: 20px; text-transform: uppercase; color: var(--accent); text-shadow: 0 2px 14px rgba(108,240,255,.6); }
 
-#help { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(96vw, 1000px); max-height: 36vh; overflow:auto; -webkit-overflow-scrolling: touch; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: clamp(8px, 1.2vw, 16px); backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,.4); pointer-events: auto; z-index: 4; }
+#help { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(96vw, 1000px); max-height: 36vh; overflow:auto; -webkit-overflow-scrolling: touch; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: clamp(8px, 1.2vw, 16px); backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,.4); pointer-events: auto; z-index: 4; display: none; }
 #help h2 { margin: 0 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--sub); }
 #help .cols { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: clamp(8px, 1.2vw, 16px); }
 #help h3 { margin: 6px 0; font-size: clamp(12px, 1.4vw, 14px); color: var(--accent); }
@@ -105,7 +105,7 @@ body {
 #help p { margin: 8px 0 0; opacity: .8; font-size: 12px; }
 
 #touch-controls { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px; display: grid; gap: 8px; pointer-events: none; z-index: 5; }
-#touch-controls[aria-hidden="true"] { display: none; }
+#touch-controls[aria-hidden="true"] { display: none !important; }
 #touch-controls .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 #touch-controls button { pointer-events: auto; padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.35); color: #eaf2ff; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
 
@@ -130,16 +130,33 @@ body {
   .select-wrap header h1 { font-size: 18px; }
   .select-wrap header p { font-size: 12px; }
   .char { padding: 10px; }
-  .char .portrait { height: 72px; }
+  .char .portrait { aspect-ratio: 1/1; }
   .grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
   .preview { max-height: 110px; }
   .selected-row { flex-direction: row !important; gap: 8px !important; justify-content: space-around !important; }
 }
 
 @media (max-width: 420px) {
-  .char .portrait { height: 64px; }
+  .char .portrait { aspect-ratio: 1/1; }
   .grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 6px; }
   .preview { max-height: 96px; }
+}
+
+.char .portrait img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important; /* Mostrar imagen completa sin recorte */
+  object-position: center center !important;
+  display: block;
+}
+
+.char .portrait svg { display: none; }
+
+.preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 

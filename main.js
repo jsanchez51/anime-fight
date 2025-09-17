@@ -188,6 +188,13 @@ const SLIDE_TUNING = {
   kbScale: 0.8         // retroceso relativo del slide
 };
 
+// Movimiento (más lento para facilitar el combate en el centro)
+const MOVEMENT_TUNING = {
+  playerAccel: 900,   // antes 1500
+  aiAccel: 650,       // antes 900
+  maxSpeed: 360       // límite de velocidad horizontal
+};
+
 // Entrada
 const input = {
   keys: new Set(),
@@ -387,7 +394,7 @@ class Fighter extends Entity {
     this.dir = dist > 0 ? 1 : -1; // mirar hacia el objetivo
     const abs = Math.abs(dist);
     if (abs > 140) {
-      this.vx += 900 * this.ai.aggression * Math.sign(dist);
+      this.vx += MOVEMENT_TUNING.aiAccel * this.ai.aggression * Math.sign(dist);
     } else if (this.atkCooldown <= 0 && Math.random() < 0.015 * this.ai.aggression) {
       // Ataque con probabilidad reducida para evitar spam
       this.attack();
@@ -408,8 +415,8 @@ class Fighter extends Entity {
     const sp = input.keys.has(c.special) || wasPressed(c.special);
     const block = input.keys.has(c.block);
 
-    if (left) this.vx -= 1500;
-    if (right) this.vx += 1500;
+    if (left) this.vx -= MOVEMENT_TUNING.playerAccel;
+    if (right) this.vx += MOVEMENT_TUNING.playerAccel;
     if (up && this.grounded) this.jump();
     if (atk && this.atkCooldown <= 0) this.attack();
     if (sp && this.spCooldown <= 0) this.special();
@@ -454,6 +461,8 @@ class Fighter extends Entity {
     this.atkCooldown -= dt; this.invul -= dt; this.spCooldown -= dt; this.slideTimer -= dt; this.slideHitCooldown -= dt;
     this.handleInput();
     this.vx += -this.vx * 6 * dt; // fricción aérea/suelo básica
+    // Limitar velocidad horizontal máxima
+    this.vx = clamp(this.vx, -MOVEMENT_TUNING.maxSpeed, MOVEMENT_TUNING.maxSpeed);
     this.vy += 2000 * dt; // gravedad
     this.x += this.vx * dt; this.y += this.vy * dt;
     // suelo
@@ -906,9 +915,9 @@ window.addEventListener('keydown', (e) => { if (e.key === 'Enter') startGameFrom
     card.className = 'char';
     card.type = 'button';
     card.dataset.id = ch.id;
-    // miniatura usando sheet local si existe, si no el cuadrado de color
-    const thumb = `sheet_out/${ch.id}/idle.png`;
-    card.innerHTML = `<div class=\"portrait\" style=\"box-shadow: inset 0 0 0 2px ${ch.aura}33; background: #0b0e1a;\"><img src=\"${thumb}\" onerror=\"this.style.display='none'\" alt=\"${ch.name}\" style=\"width:100px;height:80px;object-fit:contain;\"/><svg width=\"100\" height=\"80\"><rect x=\"20\" y=\"10\" width=\"60\" height=\"60\" rx=\"10\" fill=\"${ch.color}\" stroke=\"${ch.aura}\" stroke-width=\"6\"/></svg></div><div class=\"name\">${ch.name}</div>`;
+    const portraitUrl = `assets/portraits/${ch.id}.png`;
+    const thumbUrl = `sheet_out/${ch.id}/idle.png`;
+    card.innerHTML = `<div class=\"portrait\" style=\"box-shadow: inset 0 0 0 2px ${ch.aura}33; background: #0b0e1a;\"><img src=\"${portraitUrl}\" onerror=\"this.onerror=null;this.src='${thumbUrl}'\" alt=\"${ch.name}\"/><svg width=\"100\" height=\"80\"><rect x=\"20\" y=\"10\" width=\"60\" height=\"60\" rx=\"10\" fill=\"${ch.color}\" stroke=\"${ch.aura}\" stroke-width=\"6\"/></svg></div><div class=\"name\">${ch.name}</div>`;
     card.addEventListener('click', () => {
       selection.p1 = ch;
       updateSelectState();
@@ -930,8 +939,9 @@ window.addEventListener('keydown', (e) => { if (e.key === 'Enter') startGameFrom
     card.className = 'char';
     card.type = 'button';
     card.dataset.id = ch.id;
-    const thumb = `sheet_out/${ch.id}/idle.png`;
-    card.innerHTML = `<div class=\"portrait\" style=\"box-shadow: inset 0 0 0 2px ${ch.aura}33; background: #0b0e1a;\"><img src=\"${thumb}\" onerror=\"this.style.display='none'\" alt=\"${ch.name}\" style=\"width:100px;height:80px;object-fit:contain;\"/><svg width=\"100\" height=\"80\"><rect x=\"20\" y=\"10\" width=\"60\" height=\"60\" rx=\"10\" fill=\"${ch.color}\" stroke=\"${ch.aura}\" stroke-width=\"6\"/></svg></div><div class=\"name\">${ch.name}</div>`;
+    const portraitUrl = `assets/portraits/${ch.id}.png`;
+    const thumbUrl = `sheet_out/${ch.id}/idle.png`;
+    card.innerHTML = `<div class=\"portrait\" style=\"box-shadow: inset 0 0 0 2px ${ch.aura}33; background: #0b0e1a;\"><img src=\"${portraitUrl}\" onerror=\"this.onerror=null;this.src='${thumbUrl}'\" alt=\"${ch.name}\"/><svg width=\"100\" height=\"80\"><rect x=\"20\" y=\"10\" width=\"60\" height=\"60\" rx=\"10\" fill=\"${ch.color}\" stroke=\"${ch.aura}\" stroke-width=\"6\"/></svg></div><div class=\"name\">${ch.name}</div>`;
     card.addEventListener('click', () => {
       selection.p2 = ch;
       updateSelectState();
@@ -1054,18 +1064,18 @@ function drawStage(ctx) {
   ctx.fillRect(-400, y - 20, BASE_WIDTH + 800, BASE_HEIGHT - (y - 20));
 
   // rótulo de escenario
-  ctx.save();
-  ctx.globalAlpha = 0.85;
-  ctx.fillStyle = 'rgba(0,0,0,0.45)';
-  ctx.fillRect(20, BASE_HEIGHT - 80, 260, 56);
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-  ctx.strokeRect(20, BASE_HEIGHT - 80, 260, 56);
-  ctx.fillStyle = '#eaf2ff';
-  ctx.font = 'bold 18px Montserrat, Arial';
-  const worldName = game.world === 'leaf' ? 'Aldea de la Hoja' : game.world === 'forest' ? 'Bosque' : game.world === 'desert' ? 'Desierto' : 'Ciudad';
-  const todName = game.tod === 'night' ? 'Noche' : 'Día';
-  ctx.fillText(`${worldName} · ${todName}`, 34, BASE_HEIGHT - 46);
-  ctx.restore();
+    // ctx.save();
+    // ctx.globalAlpha = 0.85;
+    // ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    // ctx.fillRect(20, BASE_HEIGHT - 80, 260, 56);
+    // ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    // ctx.strokeRect(20, BASE_HEIGHT - 80, 260, 56);
+    // ctx.fillStyle = '#eaf2ff';
+    // ctx.font = 'bold 18px Montserrat, Arial';
+    // const worldName = game.world === 'leaf' ? 'Aldea de la Hoja' : game.world === 'forest' ? 'Bosque' : game.world === 'desert' ? 'Desierto' : 'Ciudad';
+    // const todName = game.tod === 'night' ? 'Noche' : 'Día';
+    // ctx.fillText(`${worldName} · ${todName}`, 34, BASE_HEIGHT - 46);
+    // ctx.restore();
 }
 
 // Loop
@@ -1131,8 +1141,18 @@ function frame() {
   ctx.save();
   // detectar móvil para UI táctil (solo mostrar en juego activo)
   const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(max-width: 850px)').matches);
-  const showTouchControls = isTouch && game.state === 'playing';
-  if (ui.touch?.root) ui.touch.root.setAttribute('aria-hidden', showTouchControls ? 'false' : 'true');
+  const showTouchControls = isTouch && game.state === 'playing' && ui.select.root.getAttribute('aria-hidden') === 'true';
+  if (ui.touch?.root) {
+    ui.touch.root.setAttribute('aria-hidden', showTouchControls ? 'false' : 'true');
+    // Asegurar que se oculte realmente
+    ui.touch.root.style.display = showTouchControls ? 'grid' : 'none';
+  }
+  // Ocultar/mostrar panel de ayuda (#help): visible solo en escritorio y juego activo
+  if (ui.help) {
+    const desktop = !('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(max-width: 900px)').matches);
+    const showHelp = desktop && game.state === 'playing' && ui.select.root.getAttribute('aria-hidden') === 'true';
+    ui.help.style.display = showHelp ? 'block' : 'none';
+  }
   if (game.state === 'playing') {
     applyCamera(ctx);
     drawStage(ctx);

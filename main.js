@@ -1328,3 +1328,27 @@ ui.buttons.openSelect?.addEventListener('click', () => {
 })();
 
 
+// Compartir: copiar enlace al portapapeles
+(function initShareCopy(){
+  const copyBtn = document.getElementById('copy-link');
+  if (!copyBtn) return;
+  copyBtn.addEventListener('click', async () => {
+    const url = 'https://anime-fight-phi.vercel.app/';
+    try {
+      await navigator.clipboard.writeText(url);
+      copyBtn.textContent = 'Copiado!';
+    } catch (_) {
+      try {
+        const tmp = document.createElement('input');
+        tmp.value = url;
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand('copy');
+        document.body.removeChild(tmp);
+        copyBtn.textContent = 'Copiado!';
+      } catch {}
+    }
+    setTimeout(() => { copyBtn.textContent = 'Copiar enlace'; }, 1600);
+  });
+})();
+

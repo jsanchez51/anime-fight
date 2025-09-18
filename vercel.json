@@ -5,7 +5,9 @@
     { "src": "main.js", "use": "@vercel/static" },
     { "src": "assets/**", "use": "@vercel/static" },
     { "src": "sheet_out/**", "use": "@vercel/static" },
-    { "src": "ads.txt", "use": "@vercel/static" }
+    { "src": "ads.txt", "use": "@vercel/static" },
+    { "src": "robots.txt", "use": "@vercel/static" },
+    { "src": "sitemap.xml", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/$1" }

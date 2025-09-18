@@ -3,14 +3,46 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Anime 2v2 Fighter</title>
+    <title>Anime Fight — Juego de Pelea Anime 1v1 y 2v2 Online</title>
     <link rel="stylesheet" href="styles.css" />
     <meta name="theme-color" content="#0e0f1a" />
-    <meta name="description" content="Juego de pelea anime 1v1/2v2 con sprites generados, juega en el navegador." />
-    <meta name="keywords" content="juego anime, peleas 2D, 1v1, 2v2, canvas" />
-    <meta property="og:title" content="Anime 2v2 Fighter" />
-    <meta property="og:description" content="Juega combates 1v1 o 2v2 directamente en tu navegador" />
+    <!-- Configurable: pega tu ID de GA4 (formato G-XXXXXXX) en data-ga-id o usa variable de entorno -->
+    <meta name="ga-id" content="G-XXXXXXXXXX" />
+    <meta name="description" content="Juego de pelea anime 1v1 y 2v2 online, gratuito y en español. Lucha en escenarios como Aldea de la Hoja, Bosque, Desierto y Ciudad, directo en tu navegador." />
+    <meta name="keywords" content="juego anime, juego de pelea, peleas 2D, 1v1, 2v2, juego online, gratis, navegador" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://anime-fight-phi.vercel.app/" />
+
+    <meta property="og:title" content="Anime Fight — Juego de Pelea Anime 1v1 y 2v2 Online" />
+    <meta property="og:description" content="Juega combates 1v1 o 2v2 gratis, directo en tu navegador." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://anime-fight-phi.vercel.app/" />
+    <meta property="og:site_name" content="Anime Fight" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="https://anime-fight-phi.vercel.app/assets/portraits/naruto.png" />
+    <meta property="og:image:alt" content="Anime Fight - Captura/arte del juego" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Anime Fight — Juego de Pelea Anime 1v1 y 2v2 Online" />
+    <meta name="twitter:description" content="Juega combates 1v1 o 2v2 gratis, directo en tu navegador." />
+    <meta name="twitter:image" content="https://anime-fight-phi.vercel.app/assets/portraits/naruto.png" />
+    <link rel="alternate" hreflang="es" href="https://anime-fight-phi.vercel.app/" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Anime Fight",
+      "url": "https://anime-fight-phi.vercel.app/",
+      "description": "Juego de pelea anime 1v1 y 2v2 online, gratuito y en español.",
+      "applicationCategory": "Game",
+      "operatingSystem": "Web",
+      "genre": "Peleas 2D",
+      "playMode": ["SinglePlayer", "Multiplayer"],
+      "image": "https://anime-fight-phi.vercel.app/assets/portraits/naruto.png",
+      "inLanguage": "es"
+    }
+    </script>
 </head>
 <body>
     <div id="parallax">
@@ -94,6 +126,52 @@
                     </label>
                     <button id="start-btn">Comenzar</button>
                 </div>
+            </div>
+        </section>
+
+        <section id="about" aria-label="Sobre el juego" style="max-width:920px; margin:20px auto; padding:0 12px;">
+            <h2 style="margin:10px 0 6px;">Sobre el juego</h2>
+            <p style="margin:6px 0; color:#cfd9ea;">
+                Anime Fight es un <strong>juego de pelea anime 1v1 y 2v2</strong> que funciona
+                directamente en tu navegador y es completamente <strong>gratis</strong>. Elige tu
+                equipo, configura la <em>dificultad</em>, el <em>escenario</em> (Aldea de la Hoja, Bosque,
+                Desierto o Ciudad) y el <em>momento del día</em> (Día/Noche), y luego pulsa
+                <a href="#select" style="color:#7fb0ff;">Comenzar</a> para luchar.
+            </p>
+            <ul style="margin:8px 0 0 18px; color:#cfd9ea;">
+                <li>Modos: 1 vs 1 y 2 vs 2</li>
+                <li>Controles para teclado y opción CPU</li>
+                <li>Escenarios y tiempo configurables</li>
+                <li>Funciona en PC y móvil</li>
+            </ul>
+            <p style="margin:10px 0; color:#cfd9ea;">
+                ¿Primera vez? Revisa los <a href="#help" style="color:#7fb0ff;">controles</a>.
+            </p>
+        </section>
+
+        <section id="faq" aria-label="Preguntas frecuentes" style="max-width:920px; margin:20px auto; padding:0 12px;">
+            <h2 style="margin:10px 0 6px;">Preguntas frecuentes</h2>
+            <details style="margin:8px 0;">
+                <summary style="cursor:pointer; color:#eaf2ff;">¿Es gratis jugar Anime Fight?</summary>
+                <p style="margin:8px 0 0; color:#cfd9ea;">Sí, es completamente gratis y se juega directamente en el navegador.</p>
+            </details>
+            <details style="margin:8px 0;">
+                <summary style="cursor:pointer; color:#eaf2ff;">¿Se puede jugar 2 vs 2?</summary>
+                <p style="margin:8px 0 0; color:#cfd9ea;">Sí, puedes elegir entre los modos 1 vs 1 y 2 vs 2 en el selector.</p>
+            </details>
+            <details style="margin:8px 0;">
+                <summary style="cursor:pointer; color:#eaf2ff;">¿Funciona en móvil?</summary>
+                <p style="margin:8px 0 0; color:#cfd9ea;">Sí, incluye controles táctiles y funciona en dispositivos móviles compatibles.</p>
+            </details>
+        </section>
+
+        <section id="share" aria-label="Compartir" style="max-width:920px; margin:10px auto 24px; padding:0 12px;">
+            <h2 style="margin:10px 0 6px;">Compartir</h2>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fanime-fight-phi.vercel.app%2F&text=Prueba%20Anime%20Fight%20%E2%80%94%20juego%20de%20pelea%20anime%201v1%20y%202v2" target="_blank" rel="noopener noreferrer" style="background:#1d9bf0; color:white; padding:8px 12px; border-radius:6px; text-decoration:none;">X/Twitter</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fanime-fight-phi.vercel.app%2F" target="_blank" rel="noopener noreferrer" style="background:#1877f2; color:white; padding:8px 12px; border-radius:6px; text-decoration:none;">Facebook</a>
+                <a href="https://wa.me/?text=Prueba%20Anime%20Fight%3A%20https%3A%2F%2Fanime-fight-phi.vercel.app%2F" target="_blank" rel="noopener noreferrer" style="background:#25d366; color:white; padding:8px 12px; border-radius:6px; text-decoration:none;">WhatsApp</a>
+                <button type="button" id="copy-link" style="background:#3a4157; color:#eaf2ff; padding:8px 12px; border:0; border-radius:6px; cursor:pointer;">Copiar enlace</button>
             </div>
         </section>
 
@@ -181,6 +259,51 @@
 
     <script src="main.js" defer></script>
     <noscript>Este juego requiere JavaScript.</noscript>
+    
+    <!-- Google Analytics 4 (carga condicional si hay GA-ID) -->
+    <script>
+      (function(){
+        var meta = document.querySelector('meta[name="ga-id"]');
+        var GAID = meta && meta.content && /^G-[A-Z0-9]+/.test(meta.content) ? meta.content : '';
+        if (!GAID) return;
+        var s = document.createElement('script');
+        s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GAID;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', GAID, {
+          page_title: document.title,
+          page_location: location.href,
+          page_path: location.pathname
+        });
+      })();
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Es gratis jugar Anime Fight?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Sí, es completamente gratis y se juega en el navegador."}
+        },
+        {
+          "@type": "Question",
+          "name": "¿Se puede jugar 2 vs 2?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Sí, puedes elegir entre los modos 1 vs 1 y 2 vs 2."}
+        },
+        {
+          "@type": "Question",
+          "name": "¿Funciona en móvil?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Sí, ofrece controles táctiles y funciona en dispositivos móviles compatibles."}
+        }
+      ]
+    }
+    </script>
     
     <!-- Google AdSense: bloque horizontal debajo del canvas -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4613382667340695" crossorigin="anonymous"></script>
